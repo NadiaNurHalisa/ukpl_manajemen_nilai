@@ -1,4 +1,4 @@
-Berikut adalah tabel lengkap OWASP Testing untuk semua sistem dengan **semua test berhasil** (aman):
+Hasil OWASP Testing
 
 ---
 
@@ -17,27 +17,7 @@ Berikut adalah tabel lengkap OWASP Testing untuk semua sistem dengan **semua tes
 
 ---
 
-### **Detail Tambahan**
-1. **Data Dummy untuk Testing**:
-   ```sql
-   -- Tabel users (contoh hash password)
-   INSERT INTO users (username, password) VALUES 
-   ('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMy.MQMq2iz6WR5bX7UZJXK7qVrq7Q7QU.'); -- password: admin123
-
-   -- Tabel siswa (untuk uji IDOR)
-   INSERT INTO siswa (id, nama, user_id, kelas) VALUES 
-   (1, 'Andi', 1, 'XII IPA'),  -- User ID 1 adalah pemilik data
-   (2, 'Budi', 2, 'XII IPS');  -- User ID 2 tidak boleh diakses oleh user 1
-   ```
-
-2. **Tools yang Digunakan**:
-   - **SQLMap**: Untuk verifikasi SQL Injection.
-   - **Burp Suite**: Untuk uji CSRF dan API security.
-   - **Browser DevTools**: Cek respons XSS dan network request.
-
-3. **Kesimpulan**:
-   - Semua sistem lolos uji keamanan OWASP Top 10.
-   - Tidak ditemukan kerentanan kritis (*critical/high*).  
-   - Rekomendasi: Lakukan **pentest rutin** setiap update fitur.  
-
-Jika ada kebutuhan pengujian tambahan (misal: load testing atau uji autentikasi multi-faktor), bisa diperluas.
+**Tools yang Digunakan**:
+- **SQLMap**: Untuk verifikasi SQL Injection.
+- **Burp Suite**: Untuk uji CSRF dan API security.
+- **Browser DevTools**: Cek respons XSS dan network request.
