@@ -155,10 +155,8 @@ class SecurityManager {
             $_SESSION['last_regeneration'] = time();
         }
         
-        // Set session security flags
-        ini_set('session.cookie_httponly', 1);
-        ini_set('session.cookie_secure', 1);
-        ini_set('session.use_strict_mode', 1);
+        // Note: Session security flags are set before session_start() in auth.php
+        // ini_set calls moved to prevent "Session ini settings cannot be changed when a session is active" warnings
         
         // Add session fingerprinting
         $fingerprint = self::generateSessionFingerprint();
@@ -185,7 +183,7 @@ class SecurityManager {
         header('X-Frame-Options: DENY');
         header('X-XSS-Protection: 1; mode=block');
         header('Referrer-Policy: strict-origin-when-cross-origin');
-        header('Content-Security-Policy: default-src \'self\'; script-src \'self\' \'unsafe-inline\'; style-src \'self\' \'unsafe-inline\' https://cdn.tailwindcss.com');
+        header('Content-Security-Policy: default-src \'self\'; script-src \'self\' \'unsafe-inline\' https://cdn.tailwindcss.com; style-src \'self\' \'unsafe-inline\' https://cdn.tailwindcss.com');
         
         // HTTPS enforcement (in production)
         if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
@@ -238,7 +236,7 @@ class SecurityManager {
  * Custom Security Exception
  */
 class SecurityException extends Exception {
-    public function __construct($message = "", $code = 0, Throwable $previous = null) {
+    public function __construct($message = "", $code = 0, ?Throwable $previous = null) {
         parent::__construct($message, $code, $previous);
         SecurityManager::logSecurityEvent('SECURITY_EXCEPTION', ['message' => $message], 'ERROR');
     }

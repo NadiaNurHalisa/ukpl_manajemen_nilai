@@ -1,5 +1,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/phpunit,macos,visualstudiocode,git
 # Edit at https://www.toptal.com/developers/gitignore?templates=phpunit,macos,visualstudiocode,git
+# test
+logs/
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:

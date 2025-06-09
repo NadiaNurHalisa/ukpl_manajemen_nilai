@@ -19,16 +19,18 @@ $options = [
     PDO::ATTR_EMULATE_PREPARES   => false,
     PDO::ATTR_PERSISTENT         => false,
     PDO::MYSQL_ATTR_MULTI_STATEMENTS => false,
-    PDO::MYSQL_ATTR_SSL_CA       => null, // Set SSL certificate path in production
-    PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false, // Set to true in production
+    // SSL options removed for local development
+    // Add SSL options only in production with valid certificates
+    // PDO::MYSQL_ATTR_SSL_CA       => null,
+    // PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
 ];
 
 try {
     $pdo = new PDO($dsn, $user, $pass, $options);
     
-    // Additional security configurations
-    $pdo->exec("SET SESSION sql_mode = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'");
-    $pdo->exec("SET SESSION innodb_strict_mode = 1");
+    // Additional security configurations - Updated for MySQL 8.0+ compatibility
+    // $pdo->exec("SET SESSION sql_mode = 'STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION'");
+    // $pdo->exec("SET SESSION innodb_strict_mode = 1");
     
     // Apply security manager configurations
     if (class_exists('SecurityManager')) {
@@ -37,6 +39,8 @@ try {
     
 } catch (PDOException $e) {
     // Log database connection errors securely
+    echo "<pre>"; var_dump($e); echo "<pre>";
+    
     error_log("Database connection failed: " . $e->getMessage());
     
     // Don't expose database details to users
@@ -45,6 +49,8 @@ try {
     } else {
         die("Database connection error. Please contact administrator.");
     }
+
+
 }
 
 /**
